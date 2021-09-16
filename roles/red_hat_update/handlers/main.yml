@@ -1,0 +1,7 @@
+---
+- name : reboot server
+  ansible.builtin.reboot:
+    msg: "Reboot initiated by Ansible after OS update"
+    reboot_timeout: 3600
+    test_command: uptime
+...

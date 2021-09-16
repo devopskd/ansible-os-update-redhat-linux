@@ -1,0 +1,22 @@
+---
+  - name: Updating RedHat system packages
+    yum:
+      name: '*'
+      state: latest
+      update_cache: yes
+    register: upgrade
+    tags: upgrade
+
+  - name: Cleaning up YUM cache
+    shell: yum clean all
+    tags: upgrade
+
+  - name: Check if a reboot is required
+    become: yes
+    command: needs-restarting -r
+    register: reg_reboot_required
+    ignore_errors: yes
+    failed_when: false
+    changed_when: reg_reboot_required.rc != 0
+    notify:
+      - reboot server
